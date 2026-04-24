@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Young & Ambitious — Elite University Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #fafafa;
+    --grey-100: #f4f4f2;
+    --grey-200: #e8e8e4;
+    --grey-400: #b0b0a8;
+    --grey-600: #6b6b65;
+    --grey-800: #2a2a27;
+    --accent: #0a0a0a;
+    --serif: 'Syne', sans-serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 12px; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4rem;
+    height: 72px;
+    background: rgba(250,250,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--grey-200);
+    transition: border-color 0.3s;
+  }
+
+  .logo {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--grey-600);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    max-width: 900px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--grey-400);
+  }
+
+  .hero-sub {
+    font-family: var(--sans);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 300;
+    color: var(--grey-600);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--white);
+    background: var(--black);
+    padding: 1rem 2rem;
+    border: 1px solid var(--black);
+    transition: background 0.25s, color 0.25s;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .cta-btn:hover { background: var(--white); color: var(--black); }
+
+  .cta-arrow { font-size: 1rem; transition: transform 0.2s; }
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+
+  /* NEW HERO IMAGE (replaces old decoration) */
+  .hero-photo {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 420px;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 1.2s 1s forwards;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.02);
+  }
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0%) contrast(1.02);
+    transition: all 0.3s;
+  }
+  /* subtle border effect to match original aesthetic */
+  .hero-photo::after {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    border: 1px solid rgba(10,10,10,0.12);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-stat-block {
+    position: absolute;
+    bottom: 4rem;
+    right: 4rem;
+    display: flex;
+    gap: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+    z-index: 2;
+  }
+
+  .hero-stat h3 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--black);
+  }
+
+  .hero-stat p {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    margin-top: 0.25rem;
+  }
+
+  /* DIVIDER */
+  .marquee-strip {
+    border-top: 1px solid var(--grey-200);
+    border-bottom: 1px solid var(--grey-200);
+    overflow: hidden;
+    padding: 1rem 0;
+    background: var(--grey-100);
+  }
+
+  .marquee-inner {
+    display: flex;
+    gap: 4rem;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    flex-shrink: 0;
+  }
+
+  /* INTRO SECTION */
+  #about {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    border-bottom: 1px solid var(--grey-200);
+  }
+
+  .about-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-heading {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 2rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    color: var(--grey-600);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* updated about visual — image with frame */
+  .about-visual {
+    position: relative;
+    height: 400px;
+    background: var(--grey-100);
+    overflow: hidden;
+    display: block;
+  }
+  .about-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .about-visual:hover img {
+    transform: scale(1.01);
+  }
+  .about-visual::after {
+    content: '';
+    position: absolute;
+    inset: 1.5rem;
+    border: 1px solid var(--grey-200);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* UNIVERSITY PAGE */
+  #universities {
+    padding: 6rem 4rem;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--grey-200);
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .page-count {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    background: none;
+    border: 1px solid var(--grey-200);
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+  }
+
+  .search-input {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--grey-200);
+    background: var(--white);
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--black); }
+  .search-input::placeholder { color: var(--grey-400); }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--grey-400);
+    font-size: 0.85rem;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  thead th {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    text-align: left;
+    padding: 0 1rem 1rem 0;
+    border-bottom: 1px solid var(--black);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th:hover { color: var(--black); }
+  thead th:last-child { padding-right: 0; }
+
+  thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
+  thead th.sorted .sort-icon { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--grey-200);
+    transition: background 0.15s;
+    cursor: default;
+  }
+  tbody tr:hover { background: var(--grey-100); }
+
+  tbody td {
+    padding: 1.1rem 1rem 1.1rem 0;
+    vertical-align: middle;
+    color: var(--black);
+  }
+  tbody td:last-child { padding-right: 0; }
+
+  .uni-num {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--grey-400);
+    font-weight: 400;
+    min-width: 28px;
+  }
+
+  .uni-name {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--black);
+    white-space: nowrap;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid var(--grey-200);
+    color: var(--grey-600);
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .acceptance-rate {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .rate-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .rate-bar {
+    width: 60px;
+    height: 2px;
+    background: var(--grey-200);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .rate-fill {
+    height: 100%;
+    background: var(--black);
+    border-radius: 2px;
+    transition: width 0.5s;
+  }
+
+  .location-text {
+    color: var(--grey-600);
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .majors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .major-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    color: var(--grey-600);
+    background: var(--grey-100);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0;
+    white-space: nowrap;
+  }
+
+  .note-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    color: var(--grey-400);
+    font-style: italic;
+    white-space: nowrap;
+  }
+
+  .view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--grey-600);
+    border: 1px solid var(--grey-200);
+    padding: 0.35rem 0.75rem;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .view-btn:hover {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+  .view-btn .ext-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+  }
+  .view-btn:hover .ext-arrow { transform: translate(2px, -2px); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--grey-200);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+    text-decoration: none;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--grey-400);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Intersection observer animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* NO RESULTS */
+  .no-results {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--grey-400);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    display: none;
+  }
+
+  /* scroll to top */
+  .back-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 50;
+  }
+  .back-top.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE TWEAKS */
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    #hero { padding: 8rem 1.5rem 5rem; }
+    .hero-photo { display: none; }   /* hide hero image on tablets & mobile to keep layout clean */
+    .hero-stat-block { position: static; margin-top: 3rem; justify-content: flex-start; gap: 2rem; flex-wrap: wrap; }
+    #about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+    #universities { padding: 4rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    .about-visual { height: 320px; }
+  }
+
+  @media (max-width: 1300px) and (min-width: 901px) {
+    .hero-photo { width: 260px; height: 340px; right: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#hero">Young &amp; Ambitious</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#universities">Universities</a></li>
+  </ul>
+</nav>
+
+<!-- HERO section with image (img1) placed right to "Aim Higher" -->
+<section id="hero">
+  <p class="hero-eyebrow">Your path to excellence — est. 2026</p>
+  <h1 class="hero-title">
+    Think Big.<br>
+    <span>Aim Higher.</span>
+  </h1>
+  <p class="hero-sub">Access the most selective universities in the world. Curated data, clear choices, brighter futures — for those who refuse to settle.</p>
+  <a href="#universities" class="cta-btn">View Universities <span class="cta-arrow">→</span></a>
+
+  <!-- HERO IMAGE (img1) -->
+  <div class="hero-photo">
+    <img src="img/img1.jpg" alt="Young ambitious student walking towards future" loading="eager">
+  </div>
+
+  <div class="hero-stat-block">
+    <div class="hero-stat">
+      <h3>79</h3>
+      <p>Elite Universities</p>
+    </div>
+    <div class="hero-stat">
+      <h3>100%</h3>
+      <p>Verified Data</p>
+    </div>
+    <div class="hero-stat">
+      <h3>2025–26</h3>
+      <p>Academic Year</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner" id="marqueeInner"></div>
+</div>
+
+<!-- ABOUT section with image (img2) on the right side below "Education is the greatest..." -->
+<section id="about">
+  <div>
+    <p class="about-label reveal">Our Mission</p>
+    <h2 class="about-heading reveal">Education is the greatest investment you'll ever make.</h2>
+    <p class="about-text reveal">We believe every ambitious student deserves access to clear, honest information about the world's finest universities. Young &amp; Ambitious provides verified admissions data for the 2025–2026 academic year — acceptance rates, top programs, and locations — so you can build your list with confidence.</p>
+  </div>
+  <div class="about-visual reveal">
+    <!-- img2 placed here, replacing the placeholder text -->
+    <img src="img/img2.jpg" alt="Investment in education – campus and future" loading="lazy">
+  </div>
+</section>
+
+<!-- UNIVERSITIES (interactive table) -->
+<section id="universities">
+  <div class="page-header reveal">
+    <h2 class="page-title">Universities</h2>
+    <span class="page-count" id="resultCount">79 Institutions</span>
+  </div>
+
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="women">Women's Only</button>
+    <button class="filter-btn" data-filter="ivy">Ivy League</button>
+    <button class="filter-btn" data-filter="liberal">Liberal Arts</button>
+    <button class="filter-btn" data-filter="research">Research Universities</button>
+  </div>
+
+  <div class="search-wrap reveal">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search universities…" autocomplete="off">
+  </div>
+
+  <div class="table-wrap">
+    <table id="uniTable">
+      <thead>
+        <tr>
+          <th data-col="num">#</th>
+          <th data-col="name">Institution <span class="sort-icon">↕</span></th>
+          <th data-col="rate">Acceptance Rate <span class="sort-icon">↕</span></th>
+          <th data-col="location">Location <span class="sort-icon">↕</span></th>
+          <th data-col="majors">Top Majors</th>
+          <th data-col="note">Notes</th>
+          <th data-col="link"></th>
+        </tr>
+      </thead>
+      <tbody id="uniBody"></tbody>
+    </table>
+    <p class="no-results" id="noResults">No universities match your search.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="#hero">Young &amp; Ambitious</a>
+  <p class="footer-copy">Data sourced from Common Data Sets &amp; U.S. News 2025–2026. All acceptance rates reflect Class of 2029.</p>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Full dataset (79 universities)
+const universities = [
+  { name:"Amherst College", rate:7.72, location:"Amherst, MA", majors:["Economics","Political Science","Psychology"], tags:["liberal"], note:"", url:"https://www.amherst.edu" },
+  { name:"Babson College", rate:24.0, location:"Wellesley, MA", majors:["Entrepreneurship","Finance","Business Management"], tags:["research"], note:"", url:"https://www.babson.edu" },
+  { name:"Bard College", rate:52.0, location:"Annandale-on-Hudson, NY", majors:["Arts","Humanities","Environmental Studies"], tags:["liberal"], note:"", url:"https://www.bard.edu" },
+  { name:"Barnard College", rate:11.8, location:"New York, NY", majors:["Psychology","Economics","English"], tags:["liberal","women"], note:"Women's Only", url:"https://barnard.edu" },
+  { name:"Bates College", rate:12.0, location:"Lewiston, ME", majors:["Political Science","Economics","Biology"], tags:["liberal"], note:"", url:"https://www.bates.edu" },
+  { name:"Bennington College", rate:58.0, location:"Bennington, VT", majors:["Visual Arts","Literature","Social Sciences"], tags:["liberal"], note:"", url:"https://www.bennington.edu" },
+  { name:"Berea College", rate:28.0, location:"Berea, KY", majors:["Business","Education","Technology"], tags:["liberal"], note:"No-Tuition Model", url:"https://www.berea.edu" },
+  { name:"Boston College", rate:15.7, location:"Chestnut Hill, MA", majors:["Finance","Biology","Political Science"], tags:["research"], note:"", url:"https://www.bc.edu" },
+  { name:"Boston University", rate:14.4, location:"Boston, MA", majors:["Business","Engineering","Communications"], tags:["research"], note:"", url:"https://www.bu.edu" },
+  { name:"Bowdoin College", rate:9.0, location:"Brunswick, ME", majors:["Government","Economics","Biology"], tags:["liberal"], note:"", url:"https://www.bowdoin.edu" },
+  { name:"Brandeis University", rate:30.0, location:"Waltham, MA", majors:["Biology","Computer Science","Economics"], tags:["research"], note:"", url:"https://www.brandeis.edu" },
+  { name:"Brown University", rate:5.65, location:"Providence, RI", majors:["Computer Science","Economics","Biology"], tags:["ivy","research"], note:"Ivy League", url:"https://www.brown.edu" },
+  { name:"Bryn Mawr College", rate:27.0, location:"Bryn Mawr, PA", majors:["Mathematics","Psychology","Political Science"], tags:["liberal","women"], note:"Women's Only", url:"https://www.brynmawr.edu" },
+  { name:"Bucknell University", rate:36.0, location:"Lewisburg, PA", majors:["Engineering","Business","Biology"], tags:["liberal"], note:"", url:"https://www.bucknell.edu" },
+  { name:"Carleton College", rate:17.0, location:"Northfield, MN", majors:["Economics","Biology","Mathematics"], tags:["liberal"], note:"", url:"https://www.carleton.edu" },
+  { name:"Centre College", rate:68.0, location:"Danville, KY", majors:["Economics","Biochemistry","Political Science"], tags:["liberal"], note:"", url:"https://www.centre.edu" },
+  { name:"Claremont McKenna College", rate:9.3, location:"Claremont, CA", majors:["Economics","Political Science","Government"], tags:["liberal"], note:"Rarely meets need", url:"https://www.cmc.edu" },
+  { name:"Colby College", rate:7.0, location:"Waterville, ME", majors:["Economics","Biology","Global Studies"], tags:["liberal"], note:"", url:"https://www.colby.edu" },
+  { name:"Colgate University", rate:15.0, location:"Hamilton, NY", majors:["Economics","Political Science","Psychology"], tags:["liberal"], note:"", url:"https://www.colgate.edu" },
+  { name:"College of the Holy Cross", rate:33.0, location:"Worcester, MA", majors:["Economics","Biology","Psychology"], tags:["liberal"], note:"", url:"https://www.holycross.edu" },
+  { name:"Colorado College", rate:15.0, location:"Colorado Springs, CO", majors:["Environmental Science","Biology","Political Science"], tags:["liberal"], note:"", url:"https://www.coloradocollege.edu" },
+  { name:"Columbia University", rate:4.29, location:"New York, NY", majors:["Political Science","Economics","Computer Science"], tags:["ivy","research"], note:"Ivy League", url:"https://www.columbia.edu" },
+  { name:"Connecticut College", rate:37.0, location:"New London, CT", majors:["Psychology","Economics","Government"], tags:["liberal"], note:"", url:"https://www.conncoll.edu" },
+  { name:"Cornell University", rate:8.38, location:"Ithaca, NY", majors:["Engineering","Computer Science","Business"], tags:["ivy","research"], note:"Ivy League", url:"https://www.cornell.edu" },
+  { name:"Dartmouth College", rate:6.0, location:"Hanover, NH", majors:["Economics","Government","Computer Science"], tags:["ivy","research"], note:"Ivy League", url:"https://home.dartmouth.edu" },
+  { name:"Davidson College", rate:16.0, location:"Davidson, NC", majors:["Economics","Political Science","Biology"], tags:["liberal"], note:"", url:"https://www.davidson.edu" },
+  { name:"Denison University", rate:28.0, location:"Granville, OH", majors:["Economics","Communication","Psychology"], tags:["liberal"], note:"", url:"https://denison.edu" },
+  { name:"Dickinson College", rate:43.0, location:"Carlisle, PA", majors:["International Studies","Environmental Science","Economics"], tags:["liberal"], note:"", url:"https://www.dickinson.edu" },
+  { name:"Duke University", rate:6.3, location:"Durham, NC", majors:["Computer Science","Economics","Biology"], tags:["research"], note:"Rarely meets need", url:"https://www.duke.edu" },
+  { name:"Emory University", rate:11.0, location:"Atlanta, GA", majors:["Biology","Business","Neuroscience"], tags:["research"], note:"", url:"https://www.emory.edu" },
+  { name:"Franklin & Marshall College", rate:33.0, location:"Lancaster, PA", majors:["Business","Biology","Government"], tags:["liberal"], note:"", url:"https://www.fandm.edu" },
+  { name:"Georgetown University", rate:12.0, location:"Washington, D.C.", majors:["International Relations","Political Science","Finance"], tags:["research"], note:"", url:"https://www.georgetown.edu" },
+  { name:"Grinnell College", rate:11.0, location:"Grinnell, IA", majors:["Economics","Computer Science","Biology"], tags:["liberal"], note:"", url:"https://www.grinnell.edu" },
+  { name:"Hamilton College", rate:14.0, location:"Clinton, NY", majors:["Economics","Government","Mathematics"], tags:["liberal"], note:"", url:"https://www.hamilton.edu" },
+  { name:"Harvard University", rate:3.59, location:"Cambridge, MA", majors:["Economics","Political Science","Computer Science"], tags:["ivy","research"], note:"Ivy League", url:"https://www.harvard.edu" },
+  { name:"Harvey Mudd College", rate:10.0, location:"Claremont, CA", majors:["Engineering","Computer Science","Physics"], tags:["liberal"], note:"", url:"https://www.hmc.edu" },
+  { name:"Haverford College", rate:14.0, location:"Haverford, PA", majors:["Biology","Mathematics","Political Science"], tags:["liberal"], note:"", url:"https://www.haverford.edu" },
+  { name:"Johns Hopkins University", rate:7.5, location:"Baltimore, MD", majors:["Biomedical Engineering","Public Health","Computer Science"], tags:["research"], note:"", url:"https://www.jhu.edu" },
+  { name:"Kenyon College", rate:30.0, location:"Gambier, OH", majors:["English","Psychology","Economics"], tags:["liberal"], note:"EFC $5k+", url:"https://www.kenyon.edu" },
+  { name:"Lafayette College", rate:38.0, location:"Easton, PA", majors:["Engineering","Economics","Biology"], tags:["liberal"], note:"", url:"https://www.lafayette.edu" },
+  { name:"Lehigh University", rate:35.0, location:"Bethlehem, PA", majors:["Engineering","Business","Computer Science"], tags:["research"], note:"Rarely meets need", url:"https://www.lehigh.edu" },
+  { name:"Macalester College", rate:30.0, location:"St. Paul, MN", majors:["Economics","International Studies","Computer Science"], tags:["liberal"], note:"", url:"https://www.macalester.edu" },
+  { name:"MIT", rate:4.0, location:"Cambridge, MA", majors:["Computer Science","Engineering","Physics"], tags:["research"], note:"", url:"https://www.mit.edu" },
+  { name:"Middlebury College", rate:15.0, location:"Middlebury, VT", majors:["Economics","Environmental Studies","Political Science"], tags:["liberal"], note:"", url:"https://www.middlebury.edu" },
+  { name:"Mount Holyoke College", rate:47.0, location:"South Hadley, MA", majors:["Biology","Neuroscience","Economics"], tags:["liberal","women"], note:"Women's Only", url:"https://www.mtholyoke.edu" },
+  { name:"Northwestern University", rate:7.0, location:"Evanston, IL", majors:["Journalism","Economics","Engineering"], tags:["research"], note:"", url:"https://www.northwestern.edu" },
+  { name:"Oberlin College", rate:30.0, location:"Oberlin, OH", majors:["Music","Environmental Studies","Politics"], tags:["liberal"], note:"", url:"https://www.oberlin.edu" },
+  { name:"Pitzer College", rate:13.0, location:"Claremont, CA", majors:["Social Sciences","Environmental Studies","Media Studies"], tags:["liberal"], note:"Rarely meets need", url:"https://www.pitzer.edu" },
+  { name:"Pomona College", rate:7.0, location:"Claremont, CA", majors:["Neuroscience","Public Policy","Mathematics"], tags:["liberal"], note:"", url:"https://www.pomona.edu" },
+  { name:"Princeton University", rate:4.4, location:"Princeton, NJ", majors:["Computer Science","Economics","Public Policy"], tags:["ivy","research"], note:"Ivy League", url:"https://www.princeton.edu" },
+  { name:"Rhodes College", rate:44.0, location:"Memphis, TN", majors:["Biology","Economics","Political Science"], tags:["liberal"], note:"", url:"https://www.rhodes.edu" },
+  { name:"Rice University", rate:7.7, location:"Houston, TX", majors:["Engineering","Computer Science","Economics"], tags:["research"], note:"Rarely meets need", url:"https://www.rice.edu" },
+  { name:"Scripps College", rate:23.0, location:"Claremont, CA", majors:["Psychology","Political Science","Biology"], tags:["liberal","women"], note:"Women's Only", url:"https://www.scrippscollege.edu" },
+  { name:"Simmons University", rate:71.0, location:"Boston, MA", majors:["Nursing","Social Work","Library Science"], tags:["research","women"], note:"Women's Only", url:"https://www.simmons.edu" },
+  { name:"Skidmore College", rate:27.0, location:"Saratoga Springs, NY", majors:["Business","Studio Art","Psychology"], tags:["liberal"], note:"", url:"https://www.skidmore.edu" },
+  { name:"Smith College", rate:30.0, location:"Northampton, MA", majors:["Economics","Psychology","Computer Science"], tags:["liberal","women"], note:"Women's Only", url:"https://www.smith.edu" },
+  { name:"Stanford University", rate:3.9, location:"Stanford, CA", majors:["Computer Science","Engineering","Human Biology"], tags:["research"], note:"", url:"https://www.stanford.edu" },
+  { name:"Swarthmore College", rate:7.52, location:"Swarthmore, PA", majors:["Engineering","Political Science","Biology"], tags:["liberal"], note:"", url:"https://www.swarthmore.edu" },
+  { name:"Trinity College", rate:30.0, location:"Hartford, CT", majors:["Economics","Political Science","Neuroscience"], tags:["liberal"], note:"", url:"https://www.trincoll.edu" },
+  { name:"Tufts University", rate:9.4, location:"Medford, MA", majors:["International Relations","Computer Science","Biology"], tags:["research"], note:"", url:"https://www.tufts.edu" },
+  { name:"Tulane University", rate:13.0, location:"New Orleans, LA", majors:["Business","Public Health","Architecture"], tags:["research"], note:"", url:"https://tulane.edu" },
+  { name:"Union College", rate:41.0, location:"Schenectady, NY", majors:["Engineering","Economics","Political Science"], tags:["liberal"], note:"Rarely meets need", url:"https://www.union.edu" },
+  { name:"UChicago", rate:5.4, location:"Chicago, IL", majors:["Economics","Mathematics","Political Science"], tags:["research"], note:"", url:"https://www.uchicago.edu" },
+  { name:"UNC Chapel Hill", rate:18.0, location:"Chapel Hill, NC", majors:["Business","Biology","Journalism"], tags:["research"], note:"Public University", url:"https://www.unc.edu" },
+  { name:"University of Notre Dame", rate:13.0, location:"Notre Dame, IN", majors:["Business","Engineering","Political Science"], tags:["research"], note:"", url:"https://www.nd.edu" },
+  { name:"UPenn", rate:4.9, location:"Philadelphia, PA", majors:["Finance","Economics","Nursing"], tags:["ivy","research"], note:"Ivy League", url:"https://www.upenn.edu" },
+  { name:"University of Richmond", rate:30.0, location:"Richmond, VA", majors:["Business","Political Science","Psychology"], tags:["liberal"], note:"Rarely meets need", url:"https://www.richmond.edu" },
+  { name:"University of Rochester", rate:34.0, location:"Rochester, NY", majors:["Computer Science","Biology","Music"], tags:["research"], note:"EFC $35k+", url:"https://www.rochester.edu" },
+  { name:"UVA", rate:20.0, location:"Charlottesville, VA", majors:["Economics","Politics","Commerce"], tags:["research"], note:"Public University", url:"https://www.virginia.edu" },
+  { name:"Vanderbilt University", rate:7.1, location:"Nashville, TN", majors:["Medicine/Pre-med","Economics","Engineering"], tags:["research"], note:"", url:"https://www.vanderbilt.edu" },
+  { name:"Vassar College", rate:19.0, location:"Poughkeepsie, NY", majors:["Psychology","Economics","Political Science"], tags:["liberal"], note:"", url:"https://www.vassar.edu" },
+  { name:"Wake Forest University", rate:22.0, location:"Winston-Salem, NC", majors:["Business","Biology","Psychology"], tags:["research"], note:"", url:"https://www.wfu.edu" },
+  { name:"Washington and Lee University", rate:20.0, location:"Lexington, VA", majors:["Business","Economics","History"], tags:["liberal"], note:"", url:"https://www.wlu.edu" },
+  { name:"WashU", rate:12.0, location:"St. Louis, MO", majors:["Engineering","Economics","Biology"], tags:["research"], note:"", url:"https://wustl.edu" },
+  { name:"Wellesley College", rate:16.0, location:"Wellesley, MA", majors:["Economics","Computer Science","Psychology"], tags:["liberal","women"], note:"Women's Only", url:"https://www.wellesley.edu" },
+  { name:"Wesleyan University", rate:13.0, location:"Middletown, CT", majors:["Film Studies","Economics","Biology"], tags:["liberal"], note:"", url:"https://www.wesleyan.edu" },
+  { name:"Whitman College", rate:51.0, location:"Walla Walla, WA", majors:["Biology","Psychology","Economics"], tags:["liberal"], note:"", url:"https://www.whitman.edu" },
+  { name:"Williams College", rate:8.61, location:"Williamstown, MA", majors:["Economics","Political Science","Biology"], tags:["liberal"], note:"#1 Liberal Arts", url:"https://www.williams.edu" },
+  { name:"Yale University", rate:4.59, location:"New Haven, CT", majors:["Economics","Political Science","Computer Science"], tags:["ivy","research"], note:"Ivy League", url:"https://www.yale.edu" }
+];
+
+// MARQUEE
+const marqueeItems = universities.map(u => u.name);
+const marqueeEl = document.getElementById('marqueeInner');
+const doubled = [...marqueeItems, ...marqueeItems];
+doubled.forEach(name => {
+  const span = document.createElement('span');
+  span.className = 'marquee-item';
+  span.textContent = name + ' ·';
+  marqueeEl.appendChild(span);
+});
+
+let currentFilter = 'all';
+let currentSort = { col: 'rate', dir: 'asc' };
+let searchQuery = '';
+
+function getRateColor(rate) {
+  if (rate < 10) return '#0a0a0a';
+  if (rate < 20) return '#2a2a27';
+  if (rate < 35) return '#6b6b65';
+  return '#b0b0a8';
+}
+
+function renderTable() {
+  let data = universities.filter(u => {
+    const matchFilter = currentFilter === 'all' || u.tags.includes(currentFilter);
+    const matchSearch = u.name.toLowerCase().includes(searchQuery) ||
+      u.location.toLowerCase().includes(searchQuery) ||
+      u.majors.some(m => m.toLowerCase().includes(searchQuery));
+    return matchFilter && matchSearch;
+  });
+
+  data.sort((a, b) => {
+    let va = a[currentSort.col === 'name' ? 'name' : currentSort.col === 'location' ? 'location' : 'rate'];
+    let vb = b[currentSort.col === 'name' ? 'name' : currentSort.col === 'location' ? 'location' : 'rate'];
+    if (typeof va === 'string') {
+      return currentSort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    return currentSort.dir === 'asc' ? va - vb : vb - va;
+  });
+
+  const tbody = document.getElementById('uniBody');
+  const noResults = document.getElementById('noResults');
+  const count = document.getElementById('resultCount');
+  count.textContent = data.length + ' Institution' + (data.length !== 1 ? 's' : '');
+
+  if (data.length === 0) {
+    tbody.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+  tbody.innerHTML = data.map((u, i) => {
+    const barWidth = Math.min(u.rate, 100);
+    const rateColor = getRateColor(u.rate);
+    const majorsHtml = u.majors.map(m => `<span class="major-tag">${m}</span>`).join('');
+    const noteHtml = u.note ? `<span class="note-tag">${u.note}</span>` : '—';
+    const isWomen = u.tags.includes('women');
+    const badgeHtml = isWomen ? `<span class="badge">Women's</span>` : '';
+    return `<tr>
+      <td class="uni-num">${String(i+1).padStart(2,'0')}</td>
+      <td><span class="uni-name">${u.name}</span>${badgeHtml}</td>
+      <td><div class="rate-bar-wrap"><span class="acceptance-rate" style="color:${rateColor}">${u.rate}%</span><div class="rate-bar"><div class="rate-fill" style="width:${barWidth}%"></div></div></div></td>
+      <td><span class="location-text">${u.location}</span></td>
+      <td><div class="majors-list">${majorsHtml}</div></td>
+      <td>${noteHtml}</td>
+      <td><a class="view-btn" href="${u.url}" target="_blank" rel="noopener noreferrer">Visit <span class="ext-arrow">↗</span></a></td>
+    </tr>`;
+  }).join('');
+}
+
+// FILTER & SEARCH & SORT events
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTable();
+  });
+});
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.toLowerCase().trim();
+  renderTable();
+});
+document.querySelectorAll('thead th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (col === 'num' || col === 'majors' || col === 'note') return;
+    if (currentSort.col === col) {
+      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.col = col;
+      currentSort.dir = 'asc';
+    }
+    document.querySelectorAll('thead th').forEach(t => t.classList.remove('sorted'));
+    th.classList.add('sorted');
+    const icon = th.querySelector('.sort-icon');
+    if (icon) icon.textContent = currentSort.dir === 'asc' ? '↑' : '↓';
+    renderTable();
+  });
+});
+
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 400));
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+renderTable();
+</script>
+</body>
+</html>
